@@ -201,8 +201,8 @@ final class DragLineView: NSView {
         mouth.lineCapStyle = .round
         mouth.stroke()
 
-        // 时间文本（鱼身中央，四周留白充足）
-        text.draw(at: NSPoint(x: center.x - textSize.width / 2,
+        // 时间文本（鱼身中后部：避开左侧鱼头/眼睛，水平向右偏移约 7% 鱼宽）
+        text.draw(at: NSPoint(x: center.x - textSize.width / 2 + w * 0.07,
                               y: center.y - textSize.height / 2 - 2))
     }
 }
