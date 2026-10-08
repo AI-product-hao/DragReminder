@@ -106,8 +106,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         let alert = NSAlert()
         alert.messageText = "创建提醒"
         alert.informativeText = "时长：\(StatusBarView.durationText(minutes))，请输入提醒内容"
-        // 弹窗图标：使用最新应用图标（方案2 扁平猫）
-        if let icon = NSImage(named: NSImage.applicationIconName) {
+        // 弹窗图标：直接从应用包加载最新 AppIcon.icns（避免 NSImage 名称缓存返回旧图标）
+        if let iconPath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
+           let icon = NSImage(contentsOfFile: iconPath) {
             alert.icon = icon
         }
         alert.addButton(withTitle: "开始倒计时")
@@ -136,8 +137,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         let alert = NSAlert()
         alert.messageText = "新建提醒"
         alert.informativeText = "设置提醒内容与时间（分钟）"
-        // 弹窗图标：使用最新应用图标（方案2 扁平猫）
-        if let icon = NSImage(named: NSImage.applicationIconName) {
+        // 弹窗图标：直接从应用包加载最新 AppIcon.icns（避免 NSImage 名称缓存返回旧图标）
+        if let iconPath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
+           let icon = NSImage(contentsOfFile: iconPath) {
             alert.icon = icon
         }
         alert.addButton(withTitle: "创建")
