@@ -84,6 +84,9 @@ DragReminder/
 
 ## License
 
-MIT License，见 [LICENSE](LICENSE)。
+**MIT + Commons Clause**（受限开源许可证），见 [LICENSE](LICENSE)。
 
-> 提示：源码开源（MIT）用于宣传与社区共建；正式售卖通过 App Store 分发编译后的二进制。若您介意他人用源码免费编译分发，可改用受限许可证（如 Commons Clause）或闭源。
+- ✅ 可自由学习、修改、个人/内部使用，二开后提供服务（SaaS/咨询）不受限
+- ❌ **禁止将本软件（或其功能）作为商业产品直接售卖获利**（Sell，详见 Commons Clause）
+- 对外分发须保留完整版权与许可声明
+- 作者（Licensor）保留在 App Store 等渠道上架售卖的权利；他人如需商业售卖授权，请联系作者
