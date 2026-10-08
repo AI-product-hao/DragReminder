@@ -1,0 +1,13 @@
+# 构建产物
+DragReminder
+*.app/
+
+# 生成器可执行文件
+scripts/draw_cat_icon
+scripts/draw_cat_icon_clear
+
+# macOS
+.DS_Store
+
+# 调试
+/tmp/
