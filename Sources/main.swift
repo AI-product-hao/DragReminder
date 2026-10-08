@@ -106,9 +106,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         let alert = NSAlert()
         alert.messageText = "创建提醒"
         alert.informativeText = "时长：\(StatusBarView.durationText(minutes))，请输入提醒内容"
-        // 弹窗图标：透明底猫头（填满图标区，无白底空白），回退到 AppIcon.icns
-        if let iconPath = Bundle.main.path(forResource: "cat_icon_menu_1024", ofType: "png"),
+        // 弹窗图标：方案2 透明扁平猫（最新造型、填满无白边），逐级回退
+        if let iconPath = Bundle.main.path(forResource: "cat_icon_option2_clear", ofType: "png"),
            let icon = NSImage(contentsOfFile: iconPath) {
+            icon.size = NSSize(width: 72, height: 72)
+            alert.icon = icon
+        } else if let iconPath = Bundle.main.path(forResource: "cat_icon_menu_1024", ofType: "png"),
+                  let icon = NSImage(contentsOfFile: iconPath) {
             icon.size = NSSize(width: 72, height: 72)
             alert.icon = icon
         } else if let iconPath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
@@ -141,9 +145,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
         let alert = NSAlert()
         alert.messageText = "新建提醒"
         alert.informativeText = "设置提醒内容与时间（分钟）"
-        // 弹窗图标：透明底猫头（填满图标区，无白底空白），回退到 AppIcon.icns
-        if let iconPath = Bundle.main.path(forResource: "cat_icon_menu_1024", ofType: "png"),
+        // 弹窗图标：方案2 透明扁平猫（最新造型、填满无白边），逐级回退
+        if let iconPath = Bundle.main.path(forResource: "cat_icon_option2_clear", ofType: "png"),
            let icon = NSImage(contentsOfFile: iconPath) {
+            icon.size = NSSize(width: 72, height: 72)
+            alert.icon = icon
+        } else if let iconPath = Bundle.main.path(forResource: "cat_icon_menu_1024", ofType: "png"),
+                  let icon = NSImage(contentsOfFile: iconPath) {
             icon.size = NSSize(width: 72, height: 72)
             alert.icon = icon
         } else if let iconPath = Bundle.main.path(forResource: "AppIcon", ofType: "icns"),
