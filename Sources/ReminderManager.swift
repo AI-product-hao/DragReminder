@@ -34,6 +34,13 @@ final class ReminderManager {
     /// UI 刷新回调（列表或下一个提醒发生变化时触发）
     var onChange: (() -> Void)?
 
+    /// 到点回调（参数为提醒标题）。无论 StatusBarView 还是到期 ticker 谁先调用
+    /// pruneExpired()，每一条提醒都只会触发一次（firedDueIDs 防重）。
+    var onDue: ((String) -> Void)?
+
+    /// 已触发过烟火提醒的 id（防止同一提醒被重复触发）
+    private var firedDueIDs = Set<String>()
+
     private var storageURL: URL {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         let dir = base.appendingPathComponent("DragReminder", isDirectory: true)
@@ -80,9 +87,14 @@ final class ReminderManager {
         return reminders.filter { $0.fireDate > now }.min { $0.fireDate < $1.fireDate }
     }
 
-    /// 移除已触发的提醒（到点后不再保留在列表，通知已提醒用户）
+    /// 移除已触发的提醒（到点后不再保留在列表，通知已提醒用户）。
+    /// 触发烟火是本方法的职责：先通知 onDue，再移除，保证任何调用方先执行都不会丢烟火。
     func pruneExpired() {
         let now = Date()
+        for r in reminders where r.fireDate <= now && !firedDueIDs.contains(r.id) {
+            firedDueIDs.insert(r.id)
+            onDue?(r.title.isEmpty ? "提醒" : r.title)
+        }
         let before = reminders.count
         reminders.removeAll { $0.fireDate <= now }
         if reminders.count != before {

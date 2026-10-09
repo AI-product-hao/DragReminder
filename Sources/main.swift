@@ -17,7 +17,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
     private let manager = ReminderManager()
     private var statusView: StatusBarView!
 
+    /// 到期检测：每秒检查一次是否有提醒到点，到点放烟火
+    /// （触发逻辑在 ReminderManager.pruneExpired 内，StatusBarView 与这里谁先跑都会触发且只触发一次）
+    private var ticker: Timer?
+
     func applicationDidFinishLaunching(_ notification: Notification) {
+        // 到期放烟火（当前屏幕中央 + 任务名 3 秒后消失）
+        manager.onDue = { title in
+            FireworksOverlay.show(title: title)
+        }
         // 通知权限
         let center = UNUserNotificationCenter.current()
         center.delegate = self
@@ -47,6 +55,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCent
             self.statusItem.length = max(32, width)
         }
         statusItem.view = statusView
+
+        startDueCheck()
+    }
+
+    // MARK: - 到期检测（烟火提醒）
+
+    private func startDueCheck() {
+        let t = Timer(timeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.manager.pruneExpired()
+        }
+        RunLoop.main.add(t, forMode: .common)
+        ticker = t
+        manager.pruneExpired()
     }
 
     // MARK: - 菜单
