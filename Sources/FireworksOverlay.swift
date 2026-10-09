@@ -12,9 +12,14 @@ enum FireworksOverlay {
     /// 当前活跃的烟火窗口（强引用，防止提前释放；关闭后自动移除）
     private static var activeWindows: [FireworksWindow] = []
 
-    /// 在“当前屏幕”（鼠标所在屏幕，找不到则主屏）中央放烟火并显示任务名
+    /// 到期提示音（iMessage 三全音风格 Tri-tone；保持引用直到播放完成）
+    private static var sound: NSSound?
+
+    /// 在“当前屏幕”（鼠标所在屏幕，找不到则主屏）中央放烟火并显示任务名，
+    /// 同时播放新消息风格的提示音
     @discardableResult
     static func show(title: String) -> FireworksWindow? {
+        playChime()
         let mouseLoc = NSEvent.mouseLocation
         let screen = NSScreen.screens.first { NSMouseInRect(mouseLoc, $0.frame, false) } ?? NSScreen.main
         guard let s = screen else { return nil }
@@ -27,6 +32,15 @@ enum FireworksOverlay {
         }
         window.show()
         return window
+    }
+
+    /// 播放内置提示音（resources/sound_tritone.wav，三全音，类似收到新消息）
+    private static func playChime() {
+        if sound == nil,
+           let url = Bundle.main.url(forResource: "sound_tritone", withExtension: "wav") {
+            sound = NSSound(contentsOf: url, byReference: false)
+        }
+        sound?.play()
     }
 }
 
